@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: weather-backend
+    ports:
+      - "3001:3001"
+    networks:
+      - weather-net
+    environment:
+      - PORT=3001
+
+  frontend:
+    build: ./frontend
+    container_name: weather-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - weather-net
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: weather-jenkins
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - weather-net
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+
+  sonarqube:
+    image: sonarqube:community
+    container_name: weather-sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - weather-net
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+
+networks:
+  weather-net:
+    driver: bridge
+
+volumes:
+  jenkins_home:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
