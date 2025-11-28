@@ -69,23 +69,21 @@ pipeline {
 
         stage('Deploy Dev') {
             when {
-                branch 'dev' // O 'feature/*' según instrucciones
+                branch 'dev'
             }
             steps {
                 sh 'echo "Desplegando en puerto 3001 (Dev)..."'
-                // Aquí iría tu comando docker run mapeando a puertos de desarrollo
-                // sh 'docker run -d -p 3001:3001 weather-backend'
+                sh 'docker run -d -p 3001:3001 weather-backend'
             }
         }
 
         stage('Deploy Prod') {
             when {
-                branch 'main' // O 'release/*' según instrucciones
+                branch 'main'
             }
             steps {
                 sh 'echo "Desplegando en puerto 8080 (Prod)..."'
-                // Puerto diferente como pide el PDF punto H
-                // sh 'docker run -d -p 8080:3001 weather-backend'
+                sh 'docker run -d -p 8080:3001 weather-backend'
             }
         }
     }

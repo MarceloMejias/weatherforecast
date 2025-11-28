@@ -28,16 +28,16 @@ function App() {
 
   return (
     <div className="app">
-      <h1>🌤️ Weather Forecast</h1>
+      <h1>Weather Forecast</h1>
       <p className="subtitle">Viña del Mar, Chile</p>
       
       <button onClick={fetchWeather} disabled={loading}>
-        {loading ? '⏳ Cargando...' : '🔍 Ver Clima'}
+        {loading ? 'Cargando...' : 'Ver Clima'}
       </button>
       
       {error && (
         <div className="error">
-          ⚠️ {error}
+          {error}
         </div>
       )}
       
