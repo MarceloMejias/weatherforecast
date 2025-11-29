@@ -1,8 +1,12 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, afterEach } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
 import App from './app';
 
 describe('App', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it('Debe renderizar el titulo y el boton', () => {
     render(<App />);
     
@@ -14,7 +18,7 @@ describe('App', () => {
   it('El boton debe estar habilitado inicialmente', () => {
     render(<App />);
     
-    const button = screen.getByRole('button');
+    const button = screen.getByRole('button', { name: /ver clima/i });
     expect(button.disabled).toBe(false);
   });
 });
